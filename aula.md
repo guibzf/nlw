@@ -46,3 +46,10 @@ Uma lista que contem qualquer tipo de dado
 Atributos e métodos
 Criação e manipulação de objetos
 Acesso a propriedades de objetos
+
+## Estrutura de repetição
+- While
+
+## Condicionais
+
+- Switch

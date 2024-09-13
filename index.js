@@ -8,6 +8,12 @@ let meta = {
 
 let metas = [ meta ]
 
+
+
+
+
+// CADASTRAR METAS
+
 const cadastrarMeta = async () => {
     const meta = await input({message: "Digite a meta:"})
 
@@ -20,6 +26,12 @@ const cadastrarMeta = async () => {
         { value: meta, checked: false },
     )
 }
+
+
+
+
+
+// LISTAR METAS
 
 const listarMetas = async () => {
     const respostas = await checkbox({
@@ -49,6 +61,12 @@ const listarMetas = async () => {
     console.log("Meta(s) concluída(s)!")
 }
 
+
+
+
+
+// METAS REALIZADAS
+
 const metasRealizadas = async () => {
     const realizadas = metas.filter((meta) => {
         return meta.checked
@@ -60,10 +78,16 @@ const metasRealizadas = async () => {
     }
     
     await select({
-        message: "Metas realizadas" + realizadas.length,
+        message: "Metas realizadas:" + realizadas.length,
         choices: [...realizadas]
     })
 }
+
+
+
+
+
+// METAS ABERTAS
 
 const metasAbertas = async () => {
     const abertas = metas.filter((meta) => {
@@ -76,9 +100,39 @@ const metasAbertas = async () => {
     }
 
     await select({
-        message: "Metas abertas" + abertas.length,
+        message: "Metas abertas:" + abertas.length,
         choices: [...abertas]
     })
+}
+
+
+
+
+
+// REMOVER METAS
+
+const removerMetas = async () => {
+    const metasDesmarcadas = metas.map((meta) => {
+        return {value: meta.value, checked: false}
+    })
+    const metasARemover = await checkbox({
+        message: "Selecione um item para remover.",
+        choices: [...metas],
+        instructions: false,
+    })
+
+    if(metasARemover.length == 0) {
+        console.log("Nenhuma meta para remover!")
+        return
+    }
+
+    metasARemover.forEach((item) => {
+        metas = metas.filter((meta) => {
+            return meta.value != item
+        })
+    })
+
+    console.log("Metas removidas com sucesso!")
 }
 
 
@@ -110,6 +164,10 @@ const start = async () => {
                     value: "abertas"
                 },
                 {
+                    name: "Remover metas",
+                    value: "remover"
+                },
+                {
                     name: "Sair",
                     value: "sair"
                 }
@@ -129,6 +187,9 @@ const start = async () => {
                 break
             case 'abertas':
                 await metasAbertas()
+                break
+            case 'remover':
+                await removerMetas()
                 break
             case 'sair':
                 console.log('Até a próxima!')
